@@ -14,6 +14,14 @@ include 'src/Exercise1.php';
 include 'src/Exercise2.php';
 include 'src/Exercise3.php';
 
+try {
+    $connection = new PDO('mysql:host=localhost;dbname=movie', 'root');
+} catch (PDOException $e) {
+    echo 'Error: connection to the db could not be established! - ' . $e->getMessage();
+}
+
 ?>
+
+
 </body>
 </html>
