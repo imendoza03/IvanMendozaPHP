@@ -1,24 +1,64 @@
   <?php
-
-  if($_SERVER['REQUEST_METHOD'] == 'GET') {
-      
+  
+  //Function to create the PDO connection to the DB
+  function createDbConnection(){
       try {
           $connection = new PDO('mysql:host=localhost;dbname=movie', 'root');
       } catch (PDOException $e) {
           echo 'Error: connection to the db could not be established! - ' . $e->getMessage();
       }
       
+      return $connection;
+  }
+  
+  //function to get the movies from the database
+  function getMovies(){
+      $connection = createDbConnection();
+      
       $query = 'SELECT * FROM movies';
       $statement = $connection->prepare($query);
-
+      
       if(!$statement->execute()){
           echo 'INSERT FAILED';
           var_dump($statement->errorInfo());
           return;
-      } 
+      }
       
       $movies = $statement->fetchAll();
       
+      return $movies;
+  }
+  
+  //array to store the movies
+  $movies = [];
+  
+  //array to store the movie that's selected
+  $movieToShow = [];
+  
+  if($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $selectedMovie = $_POST['movies'] ?? null;
+      
+      if(isset($selectedMovie)) {
+          $connection = createDbConnection();
+          
+          $query = "SELECT * FROM movies WHERE title = '$selectedMovie'";
+          $statement = $connection->prepare($query);
+          
+          if(!$statement->execute()){
+              echo 'INSERT FAILED';
+              var_dump($statement->errorInfo());
+              return;
+          }
+          
+      } else {
+          echo 'Please select a movie!';
+      }
+      
+      $movies = getMovies();
+  }
+
+  if($_SERVER['REQUEST_METHOD'] == 'GET') {
+      $movies = getMovies();
   }
 
   ?>
@@ -55,6 +95,20 @@
       }
       ?>
     </ul>
-
+    
+    <h3 class="movie-title">Movie details</h3>
+    <form action="index.php" method="POST">
+        <label for="movies">Please select a movie: </label>
+    	<select name="movies">
+    	<option value="">--</option>
+        	<?php foreach($movies as $movie) {
+        	    echo "<option value='" . $movie['title'] . "'>" . $movie['title'] . "</option>";
+        	}?>
+        </select>
+        <?php foreach($movieToShow as $movieToDisplay) {
+            '<p>' . $movieToDisplay . '</p>';
+        }?>
+        <button type="submit">Search</button>
+    </form>
   </body>
   </html>
