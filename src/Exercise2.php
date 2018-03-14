@@ -21,7 +21,7 @@ function currencyConvertion($amount, $currency){
 }
 
 /*Function execution for conversion from euros to dollas*/
-$result = currencyConvertion(1, 'EUR');
+$result = currencyConvertion(1, 'USD');
 
 ?>
 

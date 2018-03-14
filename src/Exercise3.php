@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $category = $_POST['category'] ?? null;
     $yearOfProduction = $_POST['year_of_prod'] ?? null;
     
+    //Validation of the input data
     $titleHasError = (is_string($title) && strlen($title) > 4);
     $directorNameHasError = (is_string($directorName) && strlen($directorName) > 4);
     $producerHasError = (is_string($producer) && strlen($producer) > 4);
@@ -30,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     if($titleHasError && $directorNameHasError && $producerHasError && $sypnosisHasError){
         
+        //Creating connection to the DB movie
         try {
             $connection = new PDO('mysql:host=localhost;dbname=movie', 'root');
         } catch (PDOException $e) {
@@ -37,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         $query = "INSERT INTO movies(title, actors, director, producer, year_of_prod, language, category, storyline) VALUES(:title, :actors, :director, :producer, :year_of_prod, :language, :category, :storyline)";
+        //Preparing query to avoid SQL injections
         $statement = $connection->prepare($query);
         $statement->bindValue('title', $title);
         $statement->bindValue('director', $directorName);

@@ -14,6 +14,7 @@ $arrayOfData = [
 /*Using the class DateTime in order to format the birthDate in the array*/
 $fomattedDate = new DateTime($arrayOfData['Date of birth']);
 $fomattedDate = $fomattedDate->format('d/m/Y');
+/*Replacing of the birthdate by the formatted one*/
 $arrayOfData['Date of birth'] = $fomattedDate;
 ?>
 
