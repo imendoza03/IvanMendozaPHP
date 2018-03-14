@@ -7,7 +7,13 @@
   <title>IvanMendozaPHP</title>
 </head>
 <body>
-test
-  
+<?php
+
+/*Include of the php files to display the results in the index page */
+include 'src/Exercise1.php';
+include 'src/Exercise2.php';
+include 'src/Exercise3.php';
+
+?>
 </body>
 </html>
